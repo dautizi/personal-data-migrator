@@ -1,5 +1,5 @@
 # Personal Data Migrator
-Python script to migrate repo from MySql to MongoDB. <img src="https://github.com/simple-icons/simple-icons/blob/develop/icons/python.svg" width="50" height="50">
+<img src="https://github.com/simple-icons/simple-icons/blob/develop/icons/python.svg" width="30" height="30"> Python script to migrate repo from MySql to MongoDB. 
 
 # Story [![](https://img.shields.io/badge/language-python-brightgreen.svg)]() [![](https://img.shields.io/badge/source-MySQL-yellow.svg)]() [![](https://img.shields.io/badge/destination-mongoDB-green.svg)]()
 > Time to migrate towards a Micro Services world!
@@ -13,7 +13,7 @@ The reason was basically the will to decouple data and consumer through a micro-
 * [Personal Data Service](https://github.com/dautizi/personal-data-service)
 * [Consumer Website](https://github.com/dautizi/danieleautizi-website)
 
-## Repositories ![MySQL](https://github.com/simple-icons/simple-icons/blob/develop/icons/mysql.svg) ![MongoDB](https://github.com/simple-icons/simple-icons/blob/develop/icons/mongodb.svg)
+## Repositories <img src="https://github.com/simple-icons/simple-icons/blob/develop/icons/mysql.svg" width="30" height="30"> <img src="https://github.com/simple-icons/simple-icons/blob/develop/icons/mongodb.svg" width="30" height="30">
 
 - [MySQL](https://www.mysql.com/) - Source relational database.
 - [MongoDB](https://www.mongodb.com/) - NoSQL Database as destination.
