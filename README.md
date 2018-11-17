@@ -1,5 +1,5 @@
 # Personal Data Migrator
-Python script to migrate repo from MySql to MongoDB. ![Python](https://github.com/simple-icons/simple-icons/blob/develop/icons/python.svg)
+Python script to migrate repo from MySql to MongoDB. <img src="https://github.com/simple-icons/simple-icons/blob/develop/icons/python.svg" width="50" height="50">
 
 # Story [![](https://img.shields.io/badge/language-python-brightgreen.svg)]() [![](https://img.shields.io/badge/source-MySQL-yellow.svg)]() [![](https://img.shields.io/badge/destination-mongoDB-green.svg)]()
 > Time to migrate towards a Micro Services world!
