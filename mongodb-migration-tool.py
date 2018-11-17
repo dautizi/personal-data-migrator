@@ -7,6 +7,10 @@ from dao.mongo_dao import *
 from data.adventure import Adventure
 from data.adventure_media import AdventureMedia
 from data.blog import Blog
+from data.education import Education
+from data.skill import Skill
+from data.work_experience import WorkExperience
+
 
 class MongoDBMigrationTool:
 
@@ -22,6 +26,16 @@ class MongoDBMigrationTool:
 
         # Blogs
         self.migrate_blogs()
+
+        # Education
+        self.migrate_educations()
+
+        # Skills
+        self.migrate_skills()
+
+        # Work Experiences
+        self.migrate_work_experiences()
+
 
     def get_now(self):
         now = datetime.datetime.now()
@@ -229,6 +243,152 @@ class MongoDBMigrationTool:
                 blogs.append(blog)
 
         return blogs
+
+
+    def migrate_educations(self):
+        educations = []
+
+        # Query all educations from db source
+        get_educations_query = "SELECT id, school, title, description, school_image, school_thumb, period, " \
+                               "start_year, end_year, prg, active, creation_time, update_time " \
+                               "FROM education "
+
+        self.logger = logging.getLogger('mongodb.migration.get_educations')
+        self.logger.info('Query to execute: %s' % get_educations_query)
+        print(get_educations_query)
+
+        rows = self.mysql_dao.get_rows(get_educations_query)
+        for row in rows:
+            if row is not None:
+                self.logger.info('Education found - '
+                                 'id: %s, '                 # row[0]
+                                 'school: %s, '             # row[1]
+                                 'title: %s, '              # row[2]
+                                 'description: %s, '        # row[3]
+                                 'school_image: %s, '       # row[4]
+                                 'school_thumb: %s, '       # row[5]
+                                 'period: %s, '             # row[6]
+                                 'start_year: %s, '         # row[7]
+                                 'end_year: %s, '           # row[8]
+                                 'prg: %s, '                # row[9]
+                                 'active: %s, '             # row[10]
+                                 'creation_time: %s, '      # row[11]
+                                 'update_time: %s, '        # row[12]
+                                 % (row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7],
+                                    row[8], row[9], row[10], row[11], row[12]))
+
+                print('EDUCATION --> %s' % row[1])
+
+                # Create a new Education instance
+                education = Education(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8],
+                                      row[9], row[10], row[11], row[12])
+
+                # Store Education into mongoDB
+                json_education = education.to_json()
+                stored = self.mongo_dao.insert(CONFIGURATION['destinationDB']['collections']['education'],
+                                               json_education)
+                self.logger.info('  stored: %s' % stored)
+                print('education stored --> %s' % stored)
+
+                educations.append(education)
+
+        return educations
+
+
+    def migrate_skills(self):
+        skills = []
+
+        # Query all educations from db source
+        get_skills_query = "SELECT id, group_name, title, progress, percentage, years, since, " \
+                           "image_url, prg, active, creation_time, update_time " \
+                           "FROM skill "
+
+        self.logger = logging.getLogger('mongodb.migration.get_skills')
+        self.logger.info('Query to execute: %s' % get_skills_query)
+
+        rows = self.mysql_dao.get_rows(get_skills_query)
+        for row in rows:
+            if row is not None:
+                self.logger.info('Skill found - '
+                                 'id: %s, '             # row[0]
+                                 'group_name: %s, '     # row[1]
+                                 'title: %s, '          # row[2]
+                                 'progress: %s, '       # row[3]
+                                 'percentage: %s, '     # row[4]
+                                 'years: %s, '          # row[5]
+                                 'since: %s, '          # row[6]
+                                 'image_url: %s, '      # row[7]
+                                 'active: %s, '         # row[8]
+                                 'prg: %s, '            # row[9]
+                                 'creation_time: %s, '  # row[10]
+                                 'update_time: %s, '    # row[11]
+                                 % (row[0], row[1], row[2], row[3], row[4], row[5], row[6],
+                                    row[7], row[8], row[9], row[10], row[11]))
+
+                print('SKILL --> %s' % row[1])
+
+                # Create a new Education instance
+                skill = Skill(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8],
+                              row[9], row[10], row[11])
+
+                # Store Skill into mongoDB
+                json_skill = skill.to_json()
+                stored = self.mongo_dao.insert(CONFIGURATION['destinationDB']['collections']['skill'],
+                                               json_skill)
+                self.logger.info('  stored: %s' % stored)
+                print('skill stored --> %s' % stored)
+
+                skills.append(skill)
+
+        return skills
+
+
+    def migrate_work_experiences(self):
+        work_experiences = []
+
+        # Query all educations from db source
+        get_work_experiences_query = "SELECT id, role, company, description, period, company_image, " \
+                                     "company_thumb, active, prg, creation_time, update_time " \
+                                     "FROM work_experience "
+
+        self.logger = logging.getLogger('mongodb.migration.get_work_experiences')
+        self.logger.info('Query to execute: %s' % get_work_experiences_query)
+
+        rows = self.mysql_dao.get_rows(get_work_experiences_query)
+        for row in rows:
+            if row is not None:
+                self.logger.info('WorkExperience found - '
+                                 'id: %s, '             # row[0]
+                                 'role: %s, '           # row[1]
+                                 'company: %s, '        # row[2]
+                                 'description: %s, '    # row[3]
+                                 'period: %s, '         # row[4]
+                                 'company_image: %s, '  # row[5]
+                                 'company_thumb: %s, '  # row[6]
+                                 'active: %s, '         # row[7]
+                                 'prg: %s, '            # row[8]
+                                 'creation_time: %s, '  # row[9]
+                                 'update_time: %s, '    # row[10]
+                                 % (row[0], row[1], row[2], row[3], row[4], row[5], row[6],
+                                    row[7], row[8], row[9], row[10]))
+
+                print('WORK EXPERIENCE --> %s' % row[1])
+
+                # Create a new Education instance
+                work_experience = WorkExperience(row[0], row[1], row[2], row[3], row[4], row[5], row[6],
+                                                 row[7], row[8], row[9], row[10])
+
+                # Store Work Experience into mongoDB
+                json_work_experience = work_experience.to_json()
+                stored = self.mongo_dao.insert(CONFIGURATION['destinationDB']['collections']['work_experience'],
+                                               json_work_experience)
+                self.logger.info('  stored: %s' % stored)
+                print('work_experience stored --> %s' % stored)
+
+                work_experiences.append(work_experience)
+
+        return work_experiences
+
 
 if __name__ == "__main__":
     # HOW TO CALL

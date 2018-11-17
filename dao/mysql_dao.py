@@ -6,6 +6,7 @@
 '''
 
 import mysql.connector
+from sshtunnel import SSHTunnelForwarder
 # https://dev.mysql.com/doc/connector-python/en/connector-python-example-connecting.html
 from settings import CONFIGURATION
 
@@ -42,6 +43,19 @@ class MySQLDAO(Singleton):
                                                   password=CONFIGURATION['sourceDB']['password'],
                                                   database=CONFIGURATION['sourceDB']['dbname'])
         return
+
+    def _ssh_tunnelling(self):
+        """
+        SSH Tunnelling
+        """
+        with SSHTunnelForwarder(
+                (CONFIGURATION['sourceDB']['ssh']['host'], 22),
+                ssh_username=CONFIGURATION['sourceDB']['ssh']['username'],
+                ssh_password=CONFIGURATION['sourceDB']['ssh']['password'],
+                remote_bind_address=(CONFIGURATION['sourceDB']['ssh']['host'], 3306)
+        ) as tunnel:
+            connection = self.connection
+
 
     def _commit(self):
         """

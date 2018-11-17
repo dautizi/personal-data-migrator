@@ -1,7 +1,7 @@
 '''
 Adventure Bean
 '''
-
+import datetime
 
 class Adventure:
 
@@ -167,6 +167,11 @@ class Adventure:
     def to_json(self):
         active = True if self.active > 0 else False
 
+        ct = datetime.datetime.strptime(self.datetime, "%Y-%m-%d %H:%M:%S")
+        isoCt = datetime.datetime.fromtimestamp(ct.timestamp(), None)
+        ut = datetime.datetime.strptime(self.last_update, "%Y-%m-%d %H:%M:%S")
+        isoUt = datetime.datetime.fromtimestamp(ut.timestamp(), None)
+
         json = {'articleUniquePath': self.article_unique_path,
                 'title': self.title,
                 'category': self.category,
@@ -185,7 +190,7 @@ class Adventure:
                 'mediaCssClass': self.media_css_class,
                 'active': active,
                 'prg': self.prg,
-                'datetime': self.datetime,
-                'lastUpdate': self.last_update,
+                'datetime': isoCt,
+                'lastUpdate': isoUt,
                 'adventureMediaIds': self.adventure_media_ids}
         return json

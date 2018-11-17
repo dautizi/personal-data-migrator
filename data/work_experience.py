@@ -1,21 +1,24 @@
 '''
 Work Experience Bean
 '''
-
+import datetime
 
 class WorkExperience:
 
-    def __init__(self, id, company, role, description, period, company_image, company_thumb, start_year, end_year):
+    def __init__(self, id, role, company, description, period, company_image, company_thumb,
+                 active, prg, creation_time, update_time):
 
         self.id = id
-        self.company = company
         self.role = role
+        self.company = company
         self.description = description
         self.period = period
         self.company_image = company_image
         self.company_thumb = company_thumb
-        self.start_year = start_year
-        self.end_year = end_year
+        self.active = active
+        self.prg = prg
+        self.creation_time = creation_time
+        self.update_time = update_time
 
     def get_id(self):
         return self.id
@@ -59,20 +62,38 @@ class WorkExperience:
     def set_company_thumb(self, company_thumb):
         return self.company_thumb == company_thumb
 
-    def get_start_year(self):
-        return self.start_year
+    def get_prg(self):
+        return self.prg
 
-    def set_start_year(self, start_year):
-        return self.start_year == start_year
+    def set_prg(self, prg):
+        return self.prg == prg
 
-    def get_end_year(self):
-        return self.end_year
+    def get_active(self):
+        return self.active
 
-    def set_end_year(self, end_year):
-        return self.end_year == end_year
+    def set_active(self, active):
+        return self.active == active
+
+    def get_creation_time(self):
+        return self.creation_time
+
+    def set_creation_time(self, creation_time):
+        return self.creation_time == creation_time
+
+    def get_update_time(self):
+        return self.update_time
+
+    def set_update_time(self, update_time):
+        return self.update_time == update_time
+
 
     def to_json(self):
         active = True if self.active > 0 else False
+
+        ct = datetime.datetime.strptime(self.creation_time, "%Y-%m-%d %H:%M:%S")
+        isoCt = datetime.datetime.fromtimestamp(ct.timestamp(), None)
+        ut = datetime.datetime.strptime(self.update_time, "%Y-%m-%d %H:%M:%S")
+        isoUt = datetime.datetime.fromtimestamp(ut.timestamp(), None)
 
         json = {'company': self.company,
                 'role': self.role,
@@ -80,10 +101,8 @@ class WorkExperience:
                 'period': self.period,
                 'companyImage': self.company_image,
                 'companyThumb': self.company_thumb,
-                'startYear': self.start_year,
-                'endYear': self.end_year,
                 'active': active,
                 'prg': self.prg,
-                'datetime': self.datetime,
-                'lastUpdate': self.last_update}
+                'datetime': isoCt,
+                'lastUpdate': isoUt}
         return json

@@ -1,12 +1,12 @@
 '''
 Skill Bean
 '''
-
+import datetime
 
 class Skill:
 
-    def __init__(self, id, group_name, title, progress, percentage, years, since, image_url, prg,
-                 active, datetime, last_update):
+    def __init__(self, id, group_name, title, progress, percentage, years, since, image_url,
+                 active, prg, creation_time, update_time):
 
         self.id = id
         self.group_name = group_name
@@ -18,8 +18,8 @@ class Skill:
         self.image_url = image_url
         self.prg = prg
         self.active = active
-        self.datetime = datetime
-        self.last_update = last_update
+        self.creation_time = creation_time
+        self.update_time = update_time
 
     def get_id(self):
         return self.id
@@ -81,20 +81,25 @@ class Skill:
     def set_active(self, active):
         return self.active == active
 
-    def get_datetime(self):
-        return self.datetime
+    def get_creation_time(self):
+        return self.creation_time
 
-    def set_datetime(self, datetime):
-        return self.datetime == datetime
+    def set_creation_time(self, creation_time):
+        return self.creation_time == creation_time
 
     def get_last_update(self):
-        return self.last_update
+        return self.update_time
 
-    def set_last_update(self, last_update):
-        return self.last_update == last_update
+    def set_update_time(self, update_time):
+        return self.update_time == update_time
 
     def to_json(self):
         active = True if self.active > 0 else False
+
+        ct = datetime.datetime.strptime(self.creation_time, "%Y-%m-%d %H:%M:%S")
+        isoCt = datetime.datetime.fromtimestamp(ct.timestamp(), None)
+        ut = datetime.datetime.strptime(self.update_time, "%Y-%m-%d %H:%M:%S")
+        isoUt = datetime.datetime.fromtimestamp(ut.timestamp(), None)
 
         json = {'groupName': self.group_name,
                 'title': self.title,
@@ -105,6 +110,6 @@ class Skill:
                 'imageUrl': self.image_url,
                 'active': active,
                 'prg': self.prg,
-                'datetime': self.datetime,
-                'lastUpdate': self.last_update}
+                'datetime': isoCt,
+                'lastUpdate': isoUt}
         return json

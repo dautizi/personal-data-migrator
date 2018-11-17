@@ -1,12 +1,12 @@
 '''
 Education Bean
 '''
-
+import datetime
 
 class Education:
 
-    def __init__(self, id, school, title, description, school_image, school_thumb, period,
-                 start_year, end_year, prg, active, datetime, last_update):
+    def __init__(self, id, school, title, description, school_image, school_thumb,
+                 period, start_year, end_year, prg, active, creation_time, update_time):
 
         self.id = id
         self.school = school
@@ -19,8 +19,8 @@ class Education:
         self.end_year = end_year
         self.prg = prg
         self.active = active
-        self.datetime = datetime
-        self.last_update = last_update
+        self.creation_time = creation_time
+        self.update_time = update_time
 
     def get_id(self):
         return self.id
@@ -58,6 +58,12 @@ class Education:
     def set_school_thumb(self, school_thumb):
         return self.school_thumb == school_thumb
 
+    def get_period(self):
+        return self.period
+
+    def set_period(self, period):
+        return self.period == period
+
     def get_start_year(self):
         return self.start_year
 
@@ -82,20 +88,25 @@ class Education:
     def set_active(self, active):
         return self.active == active
 
-    def get_datetime(self):
-        return self.datetime
+    def get_creation_time(self):
+        return self.creation_time
 
-    def set_datetime(self, datetime):
-        return self.datetime == datetime
+    def set_creation_time(self, creation_time):
+        return self.creation_time == creation_time
 
-    def get_last_update(self):
-        return self.last_update
+    def get_update_time(self):
+        return self.update_time
 
-    def set_last_update(self, last_update):
-        return self.last_update == last_update
+    def set_update_time(self, update_time):
+        return self.update_time == update_time
 
     def to_json(self):
         active = True if self.active > 0 else False
+
+        ct = datetime.datetime.strptime(self.creation_time, "%Y-%m-%d %H:%M:%S")
+        isoCt = datetime.datetime.fromtimestamp(ct.timestamp(), None)
+        ut = datetime.datetime.strptime(self.update_time, "%Y-%m-%d %H:%M:%S")
+        isoUt = datetime.datetime.fromtimestamp(ut.timestamp(), None)
 
         json = {'school': self.school,
                 'title': self.title,
@@ -107,6 +118,6 @@ class Education:
                 'endYear': self.end_year,
                 'active': active,
                 'prg': self.prg,
-                'datetime': self.datetime,
-                'lastUpdate': self.last_update}
+                'datetime': isoCt,
+                'lastUpdate': isoUt}
         return json

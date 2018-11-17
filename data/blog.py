@@ -1,13 +1,13 @@
 '''
 Blog Bean
 '''
-
+import datetime
 
 class Blog:
 
     def __init__(self, id, title, category, section, tag, keywords, css_class, image, icon, alt_image,
-                 article_url, description, static_url, blog_type, view_type, media_css_class, active,
-                 prg, datetime, last_update):
+                 article_url, description, static_url, blog_type, view_type, media_css_class, creation_time,
+                 last_update, prg, active):
 
         self.id = id
         self.title = title
@@ -25,10 +25,10 @@ class Blog:
         self.blog_type = blog_type
         self.view_type = view_type
         self.media_css_class = media_css_class
+        self.creation_time = creation_time
+        self.last_update = last_update
         self.active = active
         self.prg = prg
-        self.datetime = datetime
-        self.last_update = last_update
 
     def get_id(self):
         return self.id
@@ -138,11 +138,11 @@ class Blog:
     def set_prg(self, prg):
         return self.prg == prg
 
-    def get_datetime(self):
-        return self.datetime
+    def get_creation_time(self):
+        return self.creation_time
 
-    def set_datetime(self, datetime):
-        return self.datetime == datetime
+    def set_creation_time(self, creation_time):
+        return self.creation_time == creation_time
 
     def get_last_update(self):
         return self.last_update
@@ -152,6 +152,11 @@ class Blog:
 
     def to_json(self):
         active = True if self.active > 0 else False
+
+        ct = datetime.datetime.strptime(self.creation_time, "%Y-%m-%d %H:%M:%S")
+        isoCt = datetime.datetime.fromtimestamp(ct.timestamp(), None)
+        ut = datetime.datetime.strptime(self.last_update, "%Y-%m-%d %H:%M:%S")
+        isoUt = datetime.datetime.fromtimestamp(ut.timestamp(), None)
 
         json = {'title': self.title,
                 'category': self.category,
@@ -170,7 +175,6 @@ class Blog:
                 'mediaCssClass': self.media_css_class,
                 'active': active,
                 'prg': self.prg,
-                'datetime': self.datetime,
-                'lastUpdate': self.last_update,
-                'adventureMediaIds': self.adventure_media_ids}
+                'datetime': isoCt,
+                'lastUpdate': isoUt}
         return json

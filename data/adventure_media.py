@@ -1,7 +1,7 @@
 '''
 Adventure Media Bean
 '''
-
+import datetime
 
 class AdventureMedia:
 
@@ -89,6 +89,11 @@ class AdventureMedia:
     def to_json(self):
         active = True if self.active > 0 else False
 
+        ct = datetime.datetime.strptime(self.datetime, "%Y-%m-%d %H:%M:%S")
+        isoCt = datetime.datetime.fromtimestamp(ct.timestamp(), None)
+        ut = datetime.datetime.strptime(self.last_update, "%Y-%m-%d %H:%M:%S")
+        isoUt = datetime.datetime.fromtimestamp(ut.timestamp(), None)
+
         json = {'mediaType': self.media_type,
                 'mediaPath': self.media_path,
                 'mediaUrl': self.media_url,
@@ -97,6 +102,6 @@ class AdventureMedia:
                 'cssClass': self.css_class,
                 'active': active,
                 'prg': self.prg,
-                'datetime': self.datetime,
-                'lastUpdate': self.last_update}
+                'datetime': isoCt,
+                'lastUpdate': isoUt}
         return json
