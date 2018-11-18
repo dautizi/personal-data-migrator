@@ -100,13 +100,15 @@ class Skill:
         isoCt = datetime.datetime.fromtimestamp(ct.timestamp(), None)
         ut = datetime.datetime.strptime(self.update_time, "%Y-%m-%d %H:%M:%S")
         isoUt = datetime.datetime.fromtimestamp(ut.timestamp(), None)
+        st = datetime.datetime.strptime(self.since, "%Y-%m-%d %H:%M:%S")
+        isoSt = datetime.datetime.fromtimestamp(st.timestamp(), None)
 
         json = {'groupName': self.group_name,
                 'title': self.title,
                 'progress': self.progress,
                 'percentage': self.percentage,
                 'years': self.years,
-                'since': self.since,
+                'since': isoSt,
                 'imageUrl': self.image_url,
                 'active': active,
                 'prg': self.prg,
